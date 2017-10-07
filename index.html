@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Todo lo que me hubiese gustado saber antes de montarme en un carro tirado por elefantes</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+	body { font-family: 'Droid Serif'; }
+	h1, h2, h3 {
+		font-family: 'Yanone Kaffeesatz';
+	}
+	.default h1, h2, h3 {
+		font-weight: normal;
+	}
+	.default h2{
+		color: #336791;
+	}
+	.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+	.remark-slide-content{padding: 10px 10px 10px 10px;}
+	.normal{display:inline-block;width:300px}
+	.normal img {
+		max-width: 100%;
+		max-height: 100%;
+      	}
+	.all img {
+		width: 790px;
+      	}
+	.green {
+	        background: #1ea461;
+	        color: white;
+        	text-shadow: 0 0 20px #333;
+      	}
+	.green h1 {
+		font-size: 170px;
+	}
+	.green h2 {
+		font-size: normal;
+	}
+	.pg {
+	        background: #336791;
+	        color: white;
+        	text-shadow: 0 0 20px #333;
+      	}
+	.pg h1 {
+		font-size: normal;
+	}
+	.pg h2 {
+		font-size: normal;
+	}
+	.remark-slide > .pcenter h1,.remark-slide > .pcenter h2,.remark-slide > .pcenter h3{
+		text-align: center;
+	}
+	.remark-slide > .pcentera h1{
+		text-align: center;
+	}
+	.right-column{
+		padding-left:10%;
+	}
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, default
+# Todo lo que me hubiese gustado saber antes de montarme en un carro tirado por elefantes 
+## aka pgpool+PostgreSQL
+![Centered-aligned image](imgs/head.png)
+
+---
+class: center, middle, green
+# Hola
+
+![Centered-aligned image](imgs/tulotero.png)
+
+## talento@tulotero.es
+
+---
+class: center, middle
+
+.normal[![Default-aligned image](imgs/warning.png)]
+
+# Influcencias de la jvm
+# Inmediated de los datos
+# Buscar similitudes con otras bases de datos
+
+---
+class: center, middle,
+# Teorema CAP
+## Consistency, Availability and Partition tolerance
+# Cumplimiento de ACID
+## Atomicity, Consistency, Isolation and Durability
+---
+class: center, middle, default
+# Replicación
+## Streaming replication
+.all[![Default-aligned image](imgs/streaming.jpg)]
+
+---
+class: center, middle, pg
+# Similitudes con Streaming replication
+# Oracle 
+## REDO LOG  
+# MySQL
+## relay log y binary log
+# PostgreSQL
+## pgpool-II, Bucardo
+
+---
+class: center, middle, pg
+##jdbc:mysql:replication://[master host][:port],[slave host 1][:port]
+.all[![Default-aligned image](imgs/p1.png)]
+---
+class: center, middle
+# Middleware
+## Pool de conexiones
+## Control de promoción
+## Sacar nodos del cluster sin necesidad de cambiar clientes
+## Esclavos fuera de línea
+## Proporcionar la carga
+## Sistema de cacheo...
+---
+class: center, middle, pg
+##jdbc:postgresql://[host1][:port],[host2][:port]
+.all[![Default-aligned image](imgs/p2.png)]
+---
+# ¿Cómo funciona?
+
+---
+class: center, middle, pg
+# Similitudes con pgPool
+# PotsgreSQL 
+## pgBounce
+# MySQL
+## ProxySQL, MariaDB MaxScale, HAProxy, MySQL Router...
+---
+class: center, middle, default
+# Un proxy añade lentitud...
+# ...y en SQL MUCHA lentitud
+---
+class: center, middle, pg
+#La query estrella
+.all[![Default-aligned image](imgs/select.png)]
+---
+class: center, middle
+# Más cosas que monitorizar
+## Procesos de réplica
+## Delay de las bases de datos
+---
+class: center, middle
+#Las ventajas del pool en el middleware
+## La Base de datos no abre y cierra conexiones
+.all[![Default-aligned image](imgs/p4.png)]
+---
+class: pcenter, middle,pg
+#Las sesiones en un pool
+## La importacia del driver
+### Necesitamos establecer una política de consumo de sesión.
+```xml
+<pool>
+  ...
+  <flush-strategy>IdleConnections</flush-strategy>
+  ...
+  <timeout>
+    <idle-timeout-minutes>1</idle-timeout-minutes>
+  </timeout>
+  ...
+</pool>
+
+```
+---
+class: center, middle, default
+.all[![Default-aligned image](imgs/p5.png)]
+#Los esclavos son candidatos a promocionar
+.all[![Default-aligned image](imgs/p3.png)]
+---
+class: center, middle
+# Consideraciones con los esclavos
+## Escriben lo mismo que el maestro
+## Son máquinas con más carga
+## Son máquinas más complejas
+---
+class: center, middle, pg
+# Tráfico de un maestro
+.all[![Default-aligned image](imgs/masterNetwork.png)]
+# Tráfico de un esclavo
+.all[![Default-aligned image](imgs/slaveNetwork.png)]
+---
+class: center, middle
+# Sincronía vs asincronía
+## Inmediated de los datos
+## Fluided entre nodos
+## Tipos de modificaciones
+---
+class: pcentera, middle, pg
+# Niveles de sincronía
+.left-column[&nbsp;&nbsp;&nbsp;]
+.right-column[
+## 1. El dato está persistido y disponible
+## 2. El dato está en el log de transacciones
+## 3. El dato ha sido recibido (defecto)
+## 4. Asincronía real
+]
+---
+class: center, middle
+# Preparar una aplicación con asincronía o sincronía parcial
+## Versionado de datos
+## Tratamiento de errores
+## Posibilidad de ir al maestro 
+```
+/*NO LOAD BALANCE*/
+```
+## Inhabilitación desde el middleware
+---
+class: center, middle, pg
+.normal[![Default-aligned image](imgs/warning.png)]
+# Modificaciones masivas
+# Gran cantidad de bloqueos
+---
+class: center, middle, green
+# ?
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+
