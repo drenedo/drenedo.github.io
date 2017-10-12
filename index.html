@@ -59,6 +59,21 @@
 	.right-column{
 		padding-left:10%;
 	}
+	.left-column{
+		float:left;
+	}
+	.twocolumns .right-column{
+		padding-left:10px;
+		width:75%;
+		float: right;
+	        text-align: left;
+	}
+	.twocolumns .left-column{
+		color:#ffb3b3;
+		padding-left:10px;
+		width:20%;
+		text-align: left;
+	}
     </style>
   </head>
   <body>
@@ -86,42 +101,41 @@ class: center, middle
 # Buscar similitudes con otras bases de datos
 
 ---
-class: center, middle,
-# Teorema CAP
-## Consistency, Availability and Partition tolerance
-# Cumplimiento de ACID
-## Atomicity, Consistency, Isolation and Durability
----
 class: center, middle, default
 # Replicación
 ## Streaming replication
 .all[![Default-aligned image](imgs/streaming.jpg)]
 
 ---
-class: center, middle, pg
+class: center, middle,twocolumns, pg
 # Similitudes con Streaming replication
-# Oracle 
-## REDO LOG  
-# MySQL
+.left-column[
+## Oracle 
+## MySQL
+## PostgreSQL
+## SQL Server
+]
+.right-column[
+## (archived) redo log  
 ## relay log y binary log
-# PostgreSQL
-## pgpool-II, Bucardo
-# SQL Server
+## pgpool-II,slony, Bucardo
 ## Log Shipping
-
+]
 ---
 class: center, middle, pg
 ##jdbc:mysql:replication://[master host][:port],[slave host 1][:port]
 .all[![Default-aligned image](imgs/p1.png)]
 ---
-class: center, middle
+class: pcentera, middle
 # Middleware
-## Pool de conexiones
-## Control de promoción
-## Sacar nodos del cluster sin necesidad de cambiar clientes
-## Esclavos fuera de línea
-## Proporcionar la carga
-## Sistema de cacheo...
+.right-column[
+## 1. Pool de conexiones
+## 2. Control de promoción
+## 3. Nodos dinámicos
+## 4. Esclavos fuera de línea
+## 4. Proporcionar la carga
+## 4. Sistema de cacheo...
+]
 ---
 class: center, middle, pg
 ##jdbc:postgresql://[host1][:port],[host2][:port]
@@ -132,25 +146,22 @@ class: center, middle, pg
 ## Un proxy de sesión
 .all[![Default-aligned image](imgs/p6.png)]
 ---
-class: center, middle, pg
+class: center, middle,twocolumns, pg
 # Similitudes con pgPool
-# PotsgreSQL 
-## pgBounce
-# MySQL
-## ProxySQL, MariaDB MaxScale, HAProxy, MySQL Router...
+.left-column[
+## PotsgreSQL 
+## MySQL
+## Otros
+]
+.right-column[
+## pgBounce 
+## ProxySQL, MariaDB MaxScale, MySQL Router...
+## HAProxy
+]
 ---
 class: center, middle, default
 # Un proxy añade lentitud...
 # ...y en SQL MUCHA lentitud
----
-class: center, middle, pg
-#La query estrella
-.all[![Default-aligned image](imgs/select.png)]
----
-class: center, middle
-# Más cosas que monitorizar
-## Procesos de réplica
-## Delay de las bases de datos
 ---
 class: center, middle
 #Las ventajas del pool en el middleware
@@ -174,6 +185,41 @@ class: pcenter, middle,pg
 
 ```
 ---
+class: center, middle, pg
+#La query estrella
+.all[![Default-aligned image](imgs/select.png)]
+---
+class: center, middle
+# Más cosas que monitorizar
+## Procesos de réplica
+## Delay de las bases de datos
+---
+class: center, middle, pg
+#La query sucia
+## Last writer wins
+.all[![Default-aligned image](imgs/dirty.png)]
+---
+class: pcentera, middle
+# Preparar una aplicación con asincronía o sincronía parcial
+.right-column[
+## Versionado de datos (Optimistic)
+## Inhabilitación desde el middleware
+## Tratamiento de errores
+## Posibilidad de ir al maestro
+```
+/*NO LOAD BALANCE*/
+```
+]
+---
+class: pcentera, middle, pg
+# Niveles de sincronía
+.right-column[
+## 1. El dato está persistido y disponible (+9.6)
+## 2. El dato está en el log de transacciones
+## 3. El dato ha sido recibido (defecto)
+## 4. Asincronía real
+]
+---
 class: center, middle, default
 .all[![Default-aligned image](imgs/p5.png)]
 #Los esclavos son candidatos a promocionar
@@ -190,32 +236,6 @@ class: center, middle, pg
 .all[![Default-aligned image](imgs/masterNetwork.png)]
 # Tráfico de un esclavo
 .all[![Default-aligned image](imgs/slaveNetwork.png)]
----
-class: center, middle
-# Sincronía vs asincronía
-## Inmediated de los datos
-## Fluided entre nodos
-## Tipos de modificaciones
----
-class: pcentera, middle, pg
-# Niveles de sincronía
-.left-column[&nbsp;&nbsp;&nbsp;]
-.right-column[
-## 1. El dato está persistido y disponible
-## 2. El dato está en el log de transacciones
-## 3. El dato ha sido recibido (defecto)
-## 4. Asincronía real
-]
----
-class: center, middle
-# Preparar una aplicación con asincronía o sincronía parcial
-## Versionado de datos
-## Tratamiento de errores
-## Posibilidad de ir al maestro 
-```
-/*NO LOAD BALANCE*/
-```
-## Inhabilitación desde el middleware
 ---
 class: center, middle, pg
 .normal[![Default-aligned image](imgs/warning.png)]
