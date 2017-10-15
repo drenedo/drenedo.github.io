@@ -98,7 +98,7 @@ class: center, middle
 
 # Influcencias de la jvm
 # Inmediated de los datos
-# Buscar similitudes con otras bases de datos
+# drenedo.github.io
 
 ---
 class: center, middle, default
@@ -119,11 +119,11 @@ class: center, middle,twocolumns, pg
 ## (archived) redo log  
 ## relay log y binary log
 ## pgpool-II,slony, Bucardo
-## Log Shipping
+## Transactional replication
 ]
 ---
 class: center, middle, pg
-##jdbc:mysql:replication://[master host][:port],[slave host 1][:port]
+##jdbc:mysql:replication://maestra,esclava1,esclava2,esclavaX
 .all[![Default-aligned image](imgs/p1.png)]
 ---
 class: pcentera, middle
@@ -133,12 +133,12 @@ class: pcentera, middle
 ## 2. Control de promoción
 ## 3. Nodos dinámicos
 ## 4. Esclavos fuera de línea
-## 4. Proporcionar la carga
-## 4. Sistema de cacheo...
+## 5. Proporcionar la carga
+## 6. Sistema de cacheo...
 ]
 ---
 class: center, middle, pg
-##jdbc:postgresql://[host1][:port],[host2][:port]
+##jdbc:postgresql://pgpool1,pgpool2
 .all[![Default-aligned image](imgs/p2.png)]
 ---
 class: center, middle, pg
@@ -195,16 +195,16 @@ class: center, middle
 ## Delay de las bases de datos
 ---
 class: center, middle, pg
-#La query sucia
+# Concurrencia
 ## Last writer wins
 .all[![Default-aligned image](imgs/dirty.png)]
 ---
 class: pcentera, middle
-# Preparar una aplicación con asincronía o sincronía parcial
+# Preparar una aplicación para la concurrencia
 .right-column[
 ## Versionado de datos (Optimistic)
-## SELECT ... FOR UPDATE
-## Posibilidad de ir al maestro
+### SERIALIZABLE, LOCK (Pesimistic, Error bloqueo)
+### Posibilidad de ir al maestro
 ```
 /*NO LOAD BALANCE*/
 ```
@@ -214,10 +214,10 @@ class: pcentera, middle
 class: pcentera, middle, pg
 # Niveles de sincronía
 .right-column[
-## 1. El dato está persistido y disponible (+9.6)
-## 2. El dato está en el log de transacciones
+## 1. El dato está persistido y disponible (>=9.6)
+## 2. El log de replica ha sido leido
 ## 3. El dato ha sido recibido (defecto)
-## 4. Asincronía real
+## 4. Asincronía
 ]
 ---
 class: center, middle, default
@@ -227,7 +227,7 @@ class: center, middle, default
 ---
 class: center, middle
 # Consideraciones con los esclavos
-## Escriben lo mismo que el maestro
+## Escriben "casi" lo mismo que el maestro
 ## Son máquinas con más carga
 ## Son máquinas más complejas
 ---
@@ -236,14 +236,16 @@ class: center, middle, pg
 .all[![Default-aligned image](imgs/masterNetwork.png)]
 # Tráfico de un esclavo
 .all[![Default-aligned image](imgs/slaveNetwork.png)]
+###verde entrada, azul salida
 ---
 class: center, middle, pg
 .normal[![Default-aligned image](imgs/warning.png)]
 # Modificaciones masivas
-# Gran cantidad de bloqueos
+# Transacciones largas y bloqueantes
 ---
 class: center, middle, green
-# ?
+# ¿?
+# Gracias
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
