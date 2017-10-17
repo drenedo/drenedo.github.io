@@ -97,7 +97,7 @@ class: center, middle
 .normal[![Default-aligned image](imgs/warning.png)]
 
 # Influcencias de la jvm
-# Inmediated de los datos
+# Inmediatez de los datos
 # http://drenedo.github.io
 
 ---
@@ -112,18 +112,16 @@ class: center, middle,twocolumns, pg
 .left-column[
 ## Oracle 
 ## MySQL
-## PostgreSQL
 ## SQL Server
 ]
 .right-column[
 ## (archived) redo log  
 ## relay log y binary log
-## pgpool-II,slony, Bucardo
 ## Transactional replication
 ]
 ---
 class: center, middle, pg
-##jdbc:mysql:replication://maestra,esclava1,esclava2,esclavaX
+##jdbc:mysql:replication://maestra,esclava1,esclava2,esclavaN
 .all[![Default-aligned image](imgs/p1.png)]
 ---
 class: pcentera, middle
@@ -134,7 +132,7 @@ class: pcentera, middle
 ## 3. Nodos dinámicos
 ## 4. Esclavos fuera de línea
 ## 5. Proporcionar la carga
-## 6. Sistema de cacheo...
+## 6. Sistema de caché...
 ]
 ---
 class: center, middle, pg
@@ -165,7 +163,7 @@ class: center, middle, default
 ---
 class: center, middle
 #Las ventajas del pool en el middleware
-## La Base de datos no abre y cierra conexiones
+## La base de datos no abre y cierra conexiones
 .all[![Default-aligned image](imgs/p4.png)]
 ---
 class: pcenter, middle,pg
